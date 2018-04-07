@@ -1,4 +1,4 @@
-class Api::V1::BaseController < ApplicationController
+class Api::V1::BaseController < ActionController::API
 
   # disable the CSRF token
   #protect_from_forgery with: :null_session
