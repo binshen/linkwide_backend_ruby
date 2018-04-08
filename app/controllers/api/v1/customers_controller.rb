@@ -30,10 +30,10 @@ class Api::V1::CustomersController < Api::V1::BaseController
     end
   end
 
-  def show
-    customer = Customer.find(params[:id])
-    render json: customer
-  end
+  # def show
+  #   customer = Customer.find(params[:id])
+  #   render json: customer
+  # end
 
   def update
     method = params[:method]
