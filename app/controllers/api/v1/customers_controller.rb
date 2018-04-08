@@ -2,12 +2,8 @@ class Api::V1::CustomersController < Api::V1::BaseController
 
   def index
     customer = Customer.select('id as `key`, id, name, activated')
-    if params[:name]
-      customer = customer.where('name LIKE "%' + params[:name] + '%"')
-    end
-    if params[:activated]
-      customer = customer.where(activated: params[:activated])
-    end
+    customer = customer.where('name LIKE "%' + params[:name] + '%"') unless params[:name].blank?
+    customer = customer.where(activated: params[:activated]) unless params[:activated].blank?
     list = customer.limit(10).offset(0)
     pagination = {total: Customer.all.count, pageSize: 10, current: 1}
     render json: {list: list, pagination: pagination}
