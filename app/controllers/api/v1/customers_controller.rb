@@ -17,11 +17,8 @@ class Api::V1::CustomersController < Api::V1::BaseController
     method = params[:method]
     if method == 'post'
       if params[:name]
-        @customer = Customer.new(customer_params)
-        @customer.save
-        render json: { status: 1 }
-      else
-        render json: { status: 0 }
+        customer = Customer.new(customer_params)
+        customer.save
       end
     else
       if params[:id]
@@ -35,17 +32,31 @@ class Api::V1::CustomersController < Api::V1::BaseController
         end
       end
     end
-
   end
 
-  # def destroy
-  #   puts '+++++++++++++4'
-  #   puts params
-  # end
-  #
-  # private
-  # def customer_params
-  #   params.require(:customer).permit(:name)
-  # end
+  def show
+    customer = Customer.find(params[:id])
+    render json: customer
+  end
+
+  def update
+    method = params[:method]
+    if method == 'update_status'
+      Customer.where(id: params[:id]).update(activated: params[:activated])
+    elsif method == 'update_name'
+      Customer.where(id: params[:id]).update(name: params[:name])
+    end
+  end
+
+  def destroy
+    Customer.delete(params[:id])
+  end
+
+
+  private
+
+  def customer_params
+    params.require(:customer).permit(:name, :activated)
+  end
 
 end
