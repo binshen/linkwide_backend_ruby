@@ -10,7 +10,7 @@ class Api::V1::ComponentTypesController < Api::V1::BaseController
 
     objModel = ComponentType.select('id as `key`, id, name')
     objModel = objModel.where('name LIKE "%' + params[:name] + '%"') unless params[:name].blank?
-    list = objModel.limit(currentPage).offset(offset)
+    list = objModel.limit(pageSize).offset(offset)
     pagination = {total: ComponentType.all.count, pageSize: pageSize, current: currentPage}
     render json: {list: list, pagination: pagination}
   end
