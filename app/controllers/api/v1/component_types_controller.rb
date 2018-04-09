@@ -1,9 +1,16 @@
 class Api::V1::ComponentTypesController < Api::V1::BaseController
 
   def index
+    pageSize = params[:pageSize] unless params[:pageSize].blank?
+    currentPage = params[:currentPage] unless params[:currentPage].blank?
+
+    pageSize = 10 if pageSize.blank?
+    currentPage = 1 if currentPage.blank?
+    offset = (currentPage.to_i - 1) * pageSize.to_i
+
     objModel = ComponentType.select('id as `key`, id, name')
     objModel = objModel.where('name LIKE "%' + params[:name] + '%"') unless params[:name].blank?
-    list = objModel.limit(10).offset(0)
+    list = objModel.limit(currentPage).offset(offset)
     pagination = {total: ComponentType.all.count, pageSize: 10, current: 1}
     render json: {list: list, pagination: pagination}
   end
