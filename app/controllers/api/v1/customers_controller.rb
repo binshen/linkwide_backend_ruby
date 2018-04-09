@@ -1,10 +1,10 @@
 class Api::V1::CustomersController < Api::V1::BaseController
 
   def index
-    customer = Customer.select('id as `key`, id, name, activated')
-    customer = customer.where('name LIKE "%' + params[:name] + '%"') unless params[:name].blank?
-    customer = customer.where(activated: params[:activated]) unless params[:activated].blank?
-    list = customer.limit(10).offset(0)
+    objModel = Customer.select('id as `key`, id, name, activated')
+    objModel = objModel.where('name LIKE "%' + params[:name] + '%"') unless params[:name].blank?
+    objModel = objModel.where(activated: params[:activated]) unless params[:activated].blank?
+    list = objModel.limit(10).offset(0)
     pagination = {total: Customer.all.count, pageSize: 10, current: 1}
     render json: {list: list, pagination: pagination}
   end
@@ -13,27 +13,22 @@ class Api::V1::CustomersController < Api::V1::BaseController
     method = params[:method]
     if method == 'post'
       if params[:name]
-        customer = Customer.new(customer_params)
-        customer.save
+        objModel = Customer.new(input_params)
+        objModel.save
       end
     else
       if params[:id]
-        customer_ids = params[:id].to_s.split(',')
+        ids = params[:id].to_s.split(',')
         if method == 'remove'
-          Customer.delete(customer_ids)
+          Customer.delete(ids)
         elsif method == 'activate'
-          Customer.where(id: customer_ids).update(activated: 1)
+          Customer.where(id: ids).update(activated: 1)
         elsif method == 'deactivate'
-          Customer.where(id: customer_ids).update(activated: 0)
+          Customer.where(id: ids).update(activated: 0)
         end
       end
     end
   end
-
-  # def show
-  #   customer = Customer.find(params[:id])
-  #   render json: customer
-  # end
 
   def update
     method = params[:method]
@@ -51,7 +46,7 @@ class Api::V1::CustomersController < Api::V1::BaseController
 
   private
 
-  def customer_params
+  def input_params
     params.require(:customer).permit(:name, :activated)
   end
 
