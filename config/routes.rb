@@ -10,6 +10,10 @@ Rails.application.routes.draw do
 
       resources :product_types, only: [:index, :create, :update, :destroy]
       resources :component_types, only: [:index, :create, :update, :destroy]
+
+      resources :products, only: [:index, :create, :update, :destroy]
+      resources :components, only: [:index, :create, :update, :destroy]
+      resources :production_plans, only: [:index, :create, :update, :destroy]
     end
   end
 
