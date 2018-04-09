@@ -6,7 +6,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :login, only: [:create]
       resources :users, only: [:index, :create, :show, :update, :destroy]
-      resources :customers, only: [:index, :create, :show, :update, :destroy]
+      resources :customers, only: [:index, :create, :update, :destroy]
+
+      resources :product_types, only: [:index, :create, :update, :destroy]
+      resources :component_types, only: [:index, :create, :update, :destroy]
     end
   end
 
