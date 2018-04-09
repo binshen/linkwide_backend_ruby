@@ -12,7 +12,7 @@ class Api::V1::CustomersController < Api::V1::BaseController
     objModel = objModel.where('name LIKE "%' + params[:name] + '%"') unless params[:name].blank?
     objModel = objModel.where(activated: params[:activated]) unless params[:activated].blank?
     list = objModel.limit(pageSize).offset(offset)
-    pagination = {total: Customer.all.count, pageSize: pageSize, current: 1}
+    pagination = {total: Customer.all.count, pageSize: pageSize, current: currentPage}
     render json: {list: list, pagination: pagination}
   end
 
